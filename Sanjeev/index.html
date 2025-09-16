@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMHP - Accessible Mental Health Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="24/7 accessible mental health support platform with AI chatbot, mood tracking, and crisis resources">
+</head>
+<body>
+    <!-- Skip Navigation for Accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+    
+    <!-- Crisis Button - Always Visible -->
+    <button id="crisis-btn" class="crisis-button" aria-label="Emergency crisis support">
+        <span>Crisis Help</span>
+        <span class="crisis-icon">🚨</span>
+    </button>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active">
+        <div class="container">
+            <div class="welcome-content">
+                <h1>Welcome to AMHP</h1>
+                <p class="lead">Accessible Mental Health Platform - Anonymous, safe, and supportive</p>
+                
+                <div class="accessibility-settings card">
+                    <div class="card__header">
+                        <h2>Accessibility Settings</h2>
+                        <p>Customize your experience</p>
+                    </div>
+                    <div class="card__body">
+                        <div class="form-group">
+                            <label for="language-select" class="form-label">Language</label>
+                            <select id="language-select" class="form-control">
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                                <option value="zh">中文</option>
+                                <option value="ar">العربية</option>
+                                <option value="hi">हिन्दी</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="theme-select" class="form-label">Theme</label>
+                            <select id="theme-select" class="form-control">
+                                <option value="light">Light</option>
+                                <option value="dark">Dark</option>
+                                <option value="high-contrast">High Contrast</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="text-size-select" class="form-label">Text Size</label>
+                            <select id="text-size-select" class="form-control">
+                                <option value="small">Small</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="large">Large</option>
+                                <option value="extra-large">Extra Large</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" id="voice-enabled"> Enable voice features
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="welcome-actions">
+                    <button id="start-anonymous" class="btn btn--primary btn--lg">Start Anonymous Session</button>
+                    <button id="continue-guest" class="btn btn--outline btn--lg">Continue as Guest</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard-screen" class="screen">
+        <nav class="main-nav">
+            <div class="nav-brand">AMHP</div>
+            <ul class="nav-menu">
+                <li><button class="nav-link" data-screen="dashboard">Dashboard</button></li>
+                <li><button class="nav-link" data-screen="chat">AI Support</button></li>
+                <li><button class="nav-link" data-screen="mood">Mood Tracker</button></li>
+                <li><button class="nav-link" data-screen="resources">Resources</button></li>
+                <li><button class="nav-link" data-screen="settings">Settings</button></li>
+            </ul>
+        </nav>
+
+        <main id="main-content" class="main-content">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h1>Your Mental Health Dashboard</h1>
+                    <p class="mood-greeting" id="mood-greeting">How are you feeling today?</p>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-card card">
+                        <div class="card__header">
+                            <h3>Quick Mood Check</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="mood-quick-select">
+                                <div class="mood-faces">
+                                    <button class="mood-face" data-mood="2">😢</button>
+                                    <button class="mood-face" data-mood="4">😐</button>
+                                    <button class="mood-face" data-mood="6">🙂</button>
+                                    <button class="mood-face" data-mood="8">😊</button>
+                                    <button class="mood-face" data-mood="10">😄</button>
+                                </div>
+                            </div>
+                            <button class="btn btn--secondary btn--full-width mt-8" data-screen="mood">Full Mood Tracker</button>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card card">
+                        <div class="card__header">
+                            <h3>AI Support Chat</h3>
+                        </div>
+                        <div class="card__body">
+                            <p>Get immediate emotional support from our AI companion</p>
+                            <button class="btn btn--primary btn--full-width" data-screen="chat">Start Conversation</button>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-card card">
+                        <div class="card__header">
+                            <h3>Today's Recommendation</h3>
+                        </div>
+                        <div class="card__body" id="daily-recommendation">
+                            <p>Loading personalized recommendation...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- AI Chat Screen -->
+    <div id="chat-screen" class="screen">
+        <nav class="main-nav">
+            <div class="nav-brand">AMHP</div>
+            <button class="back-btn" data-screen="dashboard">← Back to Dashboard</button>
+        </nav>
+        
+        <main class="main-content">
+            <div class="container">
+                <div class="chat-container">
+                    <div class="chat-header">
+                        <h1>AI Emotional Support</h1>
+                        <p>I'm here to listen and support you 24/7</p>
+                    </div>
+                    
+                    <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
+                        <!-- Messages will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="chat-input" class="form-control" placeholder="Type your message..." aria-label="Chat message input">
+                            <button id="send-btn" class="btn btn--primary">Send</button>
+                            <button id="voice-btn" class="btn btn--outline" aria-label="Voice input">🎤</button>
+                        </div>
+                        <div class="chat-suggestions" id="chat-suggestions">
+                            <button class="suggestion-btn">I'm feeling anxious</button>
+                            <button class="suggestion-btn">I'm having a bad day</button>
+                            <button class="suggestion-btn">I need someone to talk to</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mood Tracking Screen -->
+    <div id="mood-screen" class="screen">
+        <nav class="main-nav">
+            <div class="nav-brand">AMHP</div>
+            <button class="back-btn" data-screen="dashboard">← Back to Dashboard</button>
+        </nav>
+        
+        <main class="main-content">
+            <div class="container">
+                <h1>Mood Tracking</h1>
+                
+                <div class="mood-entry card">
+                    <div class="card__header">
+                        <h2>How are you feeling right now?</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="mood-scale">
+                            <label for="mood-slider" class="form-label">Rate your mood (1-10):</label>
+                            <div class="slider-container">
+                                <input type="range" id="mood-slider" min="1" max="10" value="5" class="mood-slider" aria-describedby="mood-description">
+                                <div class="slider-labels">
+                                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                                </div>
+                            </div>
+                            <p id="mood-description" class="mood-description">Neutral</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="mood-note" class="form-label">Add a note (optional):</label>
+                            <textarea id="mood-note" class="form-control" placeholder="What's influencing your mood today?"></textarea>
+                        </div>
+                        
+                        <button id="save-mood" class="btn btn--primary">Save Mood Entry</button>
+                    </div>
+                </div>
+                
+                <div class="mood-chart-container card">
+                    <div class="card__header">
+                        <h2>Your Mood Trends</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="chart-container" style="position: relative; height: 300px;">
+                            <canvas id="mood-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Resources Screen -->
+    <div id="resources-screen" class="screen">
+        <nav class="main-nav">
+            <div class="nav-brand">AMHP</div>
+            <button class="back-btn" data-screen="dashboard">← Back to Dashboard</button>
+        </nav>
+        
+        <main class="main-content">
+            <div class="container">
+                <h1>Self-Help Resources</h1>
+                
+                <div class="resources-tabs">
+                    <button class="tab-btn active" data-tab="cbt">CBT Exercises</button>
+                    <button class="tab-btn" data-tab="meditation">Meditation</button>
+                    <button class="tab-btn" data-tab="journal">Journal</button>
+                </div>
+                
+                <div id="cbt-tab" class="tab-content active">
+                    <div class="resources-grid" id="cbt-resources">
+                        <!-- CBT exercises will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div id="meditation-tab" class="tab-content">
+                    <div class="resources-grid" id="meditation-resources">
+                        <!-- Meditation exercises will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div id="journal-tab" class="tab-content">
+                    <div class="journal-container">
+                        <div class="journal-prompts card">
+                            <div class="card__header">
+                                <h2>Journal Prompts</h2>
+                            </div>
+                            <div class="card__body">
+                                <div id="journal-prompt" class="journal-prompt">
+                                    <!-- Prompt will be populated by JavaScript -->
+                                </div>
+                                <button id="new-prompt" class="btn btn--outline">Get New Prompt</button>
+                            </div>
+                        </div>
+                        
+                        <div class="journal-entry card">
+                            <div class="card__header">
+                                <h2>Your Journal Entry</h2>
+                            </div>
+                            <div class="card__body">
+                                <textarea id="journal-text" class="form-control" placeholder="Start writing your thoughts..."></textarea>
+                                <button id="save-journal" class="btn btn--primary mt-8">Save Entry</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Crisis Support Screen -->
+    <div id="crisis-screen" class="screen">
+        <div class="crisis-header">
+            <h1>Crisis Support</h1>
+            <p>You're not alone. Help is available 24/7.</p>
+        </div>
+        
+        <div class="container">
+            <div class="crisis-content">
+                <div class="immediate-help card">
+                    <div class="card__header">
+                        <h2>Immediate Help</h2>
+                    </div>
+                    <div class="card__body">
+                        <div class="crisis-buttons">
+                            <a href="tel:988" class="btn btn--primary btn--lg crisis-btn-link">
+                                📞 Call 988 - Suicide & Crisis Lifeline
+                            </a>
+                            <a href="sms:741741" class="btn btn--primary btn--lg crisis-btn-link">
+                                💬 Text HOME to 741741
+                            </a>
+                            <a href="tel:911" class="btn btn--error btn--lg crisis-btn-link">
+                                🚨 Emergency: Call 911
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="crisis-resources">
+                    <div class="card">
+                        <div class="card__header">
+                            <h2>24/7 Crisis Resources</h2>
+                        </div>
+                        <div class="card__body" id="crisis-resources-list">
+                            <!-- Crisis resources will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="return-actions">
+                    <button class="btn btn--outline btn--lg" data-screen="dashboard">Return to Dashboard</button>
+                    <button class="btn btn--secondary btn--lg" data-screen="chat">Talk to AI Support</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings-screen" class="screen">
+        <nav class="main-nav">
+            <div class="nav-brand">AMHP</div>
+            <button class="back-btn" data-screen="dashboard">← Back to Dashboard</button>
+        </nav>
+        
+        <main class="main-content">
+            <div class="container">
+                <h1>Settings</h1>
+                
+                <div class="settings-sections">
+                    <div class="settings-section card">
+                        <div class="card__header">
+                            <h2>Accessibility</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="form-group">
+                                <label for="settings-language" class="form-label">Language</label>
+                                <select id="settings-language" class="form-control">
+                                    <option value="en">English</option>
+                                    <option value="es">Español</option>
+                                    <option value="fr">Français</option>
+                                    <option value="zh">中文</option>
+                                    <option value="ar">العربية</option>
+                                    <option value="hi">हिन्दी</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="settings-theme" class="form-label">Theme</label>
+                                <select id="settings-theme" class="form-control">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="high-contrast">High Contrast</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="settings-text-size" class="form-label">Text Size</label>
+                                <select id="settings-text-size" class="form-control">
+                                    <option value="small">Small</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="large">Large</option>
+                                    <option value="extra-large">Extra Large</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section card">
+                        <div class="card__header">
+                            <h2>Privacy & Data</h2>
+                        </div>
+                        <div class="card__body">
+                            <p>Your privacy is our priority. All data is stored locally and encrypted.</p>
+                            <div class="privacy-controls">
+                                <button class="btn btn--outline">Export My Data</button>
+                                <button class="btn btn--error">Clear All Data</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section card">
+                        <div class="card__header">
+                            <h2>Notifications</h2>
+                        </div>
+                        <div class="card__body">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" id="mood-reminders" checked> Daily mood check reminders
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <input type="checkbox" id="resource-suggestions"> Weekly resource suggestions
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
